@@ -1,55 +1,81 @@
 # proxmox-backup-client
-Rocky Linux 8 and Fedora 36 cookbook for build Client for Proxmox Backup Server. the client is written in the Rust programming language.
 
-## rpm package
-rpm package for Fedora and Rocky linux8 are available in assets of release [v2.2.2](https://github.com/sg4r/proxmox-backup-client/releases/tag/v2.2.2)  
-rpm package for centos7 [v2.1.2](https://github.com/sg4r/proxmox-backup-client/releases/download/v2.1.2/proxmox-backup-2.1.2-1.x86_64.el7.rpm)
+Proxmox Backup Client for Red Hat Enterprise Linux RHEL 8 and RHEL 9
 
-## install rust
+This will also work with Rocky Linux 8, Rocky Linux 9, AlmaLinux 8 and AlmaLinux 9.
+
+
+## Plan a) - Install the binary rpm package
+
+### Binary package
+
+The RPM packages for RHEL 8 and RHEL 9 are available as assets of release [2.2.7](https://github.com/tomgem/proxmox-backup-client/releases/tag/2.2.7).
+Use it at your own risk. I'd suggest going for plan b).
+
+### Install the binary package
+
+Please note: this rpm does not (yet) have dependencies. Make sure the following packages are installed:
+
+```
+dnf install systemd-libs libgcc libzstd libacl fuse3-libs libuuid openssl-libs
+```
+
+Now install the rpm:
+
+```
+dnf install proxmox-backup-2.2.7-1.x86_64.rpm
+```
+
+
+## Plan b) - Build the rpm yourself
+
+### Install requirements (needed on build host only)
+
 ```
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 source $HOME/.cargo/env
 ```
-## install depends
+
 ```
-yum install systemd-devel clang-devel libzstd-devel libacl-devel pam-devel fuse3-devel libuuid-devel openssl-devel
-yum groupinstall 'Development Tools'
-yum install git
+dnf update
+dnf groupinstall 'Development Tools'
+dnf install git systemd-devel clang-devel libzstd-devel libacl-devel pam-devel fuse3-devel libuuid-devel openssl-devel
 ```
-## clone proxmox-backup-client cookbook
+
+### Clone proxmox-backup-client cookbook
+
 ```
-git clone https://github.com/sg4r/proxmox-backup-client.git
+git clone https://github.com/tomgem/proxmox-backup-client.git
+```
+
+### Build it
+
+```
 cd proxmox-backup-client
+bash build.sh
 ```
-## build
+
+### Install the rpm
+
+Please note: this rpm does not (yet) have dependencies. Make sure the following packages are installed on a new host:
+
 ```
-bash ./pbs.build.sh
+dnf install systemd-libs libgcc libzstd libacl fuse3-libs libuuid openssl-libs
 ```
-## check
+
+Now install proxmox-backup-client:
+
 ```
-./proxmox-backup/target/release/proxmox-backup-client version
-client version: 2.2.2
+dnf install proxmox-backup/target/generate-rpm/proxmox-backup-2.2.7-1.x86_64.rpm
 ```
-## generate-rpm
-build a rpm package with the executable files
+
+### Test it
+
 ```
-cd proxmox-backup/
-cargo generate-rpm
-[root@pbs proxmox-backup]# ll target/generate-rpm/
-total 6344
--rw-r--r--. 1 root root 6494249 Jun  3 18:51 proxmox-backup-2.2.2-1.x86_64.rpm
-cd ..
+proxmox-backup-client version
+client version: 2.2.7
 ```
-to build a package with dependency support, read this [rpmbuild.md](rpmbuild.md)
-## install binaries
-if you prefer to locally install the binaries, carry out these commands
-```
-install -Dm755 "proxmox-backup/target/release/proxmox-backup-client" "/usr/local/sbin/proxmox-backup-client"
-install -Dm755 "proxmox-backup/target/release/dump-catalog-shell-cli" "/usr/local/sbin/dump-catalog-shell-cli"
-install -Dm755 "proxmox-backup/target/release/pxar" "/usr/local/sbin/pxar"
-```
-## make clean
-```
-cd ..
-rm -fr ./proxmox-backup-client
-```
+
+## Thanks
+
+Thanks to [sg4r](https://github.com/sg4r), this is a fork of his work [sg4r/proxmox-backup-client](https://github.com/sg4r/proxmox-backup-client).
