@@ -1,9 +1,10 @@
 #!/bin/bash
 # 
-# build proxmox-backup-client for RHEL 8
+# build proxmox-backup-client for RHEL 8 and RHEL 9
 #  last tested:
-#   - at 2022-11-21
+#   - at 2022-11-22
 #   - on Red Hat Enterprise Linux release 8.7 (Ootpa)
+#   - and Red Hat Enterprise Linux release 9.0 (Plow)
 #   - with proxmox-backup-client 2.2.7
 # 
 
@@ -13,7 +14,7 @@
 
 #dnf update
 #dnf groupinstall 'Development Tools'
-#dnf install git rpmrebuild systemd-devel clang-devel libzstd-devel libacl-devel pam-devel fuse3-devel libuuid-devel openssl-devel
+#dnf install git systemd-devel clang-devel libzstd-devel libacl-devel pam-devel fuse3-devel libuuid-devel openssl-devel
 
 #git clone https://github.com/tomgem/proxmox-backup-client.git
 #cd proxmox-backup-client
@@ -62,8 +63,4 @@ echo ""
 echo "The proxmox-backup rpm can be found in the folder proxmox-backup/target/generate-rpm"
 echo "Install it with dnf:"
 echo "dnf install proxmox-backup/target/generate-rpm/proxmox-backup-2.2.7-1.x86_64.rpm"
-echo ""
-echo "Please note: this rpm does not (yet) have depencies"
-echo "Make sure the following packages are installed on a new host:"
-echo "dnf install systemd-libs libgcc libzstd libacl fuse3-libs libuuid openssl-libs qrencode"
 echo ""
