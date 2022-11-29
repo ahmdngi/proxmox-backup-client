@@ -40,7 +40,7 @@ cargo build --release --package proxmox-backup-client --bin proxmox-backup-clien
 
 if [[ $? == 0 ]]; then
     echo "build successful"
-    ./proxmox-backup/target/release/proxmox-backup-client version
+    ./target/release/proxmox-backup-client version
 else
     echo "build failed"
     exit 1
