@@ -1,4 +1,4 @@
---- proxmox-backup/Cargo.toml	2022-11-21 10:55:56.691285734 +0100
+--- proxmox-backup/Cargo.toml	2022-11-29 10:55:56.691285734 +0100
 +++ proxmox-backup/Cargo.gem.toml	2022-11-21 13:15:36.959057158 +0100
 @@ -28,7 +28,6 @@
      "proxmox-rrd",
@@ -62,7 +62,7 @@
 -zstd = { version = "0.6", features = [ "bindgen" ] }
 -
 -pathpatterns = "0.1.2"
--pxar = { version = "0.10.1", features = [ "tokio-io" ] }
+-pxar = { version = "0.10.2", features = [ "tokio-io" ] }
 -
 -proxmox-http = { version = "0.7", features = [ "client", "client-trait", "http-helpers", "proxmox-async", "websocket" ] }
 -proxmox-io = "1"
