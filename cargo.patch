@@ -1,103 +1,85 @@
---- proxmox-backup/Cargo.toml	2022-11-29 10:55:56.691285734 +0100
-+++ proxmox-backup/Cargo.gem.toml	2022-11-21 13:15:36.959057158 +0100
-@@ -28,7 +28,6 @@
-     "proxmox-rrd",
-     "pbs-tape",
-     "pbs-tools",
--
+--- proxmox-backup/Cargo.toml	2023-02-22 11:22:52.178824909 +0100
++++ proxmox-backup/Cargo.gem.toml	2023-02-22 11:13:23.082613194 +0100
+@@ -43,7 +43,6 @@
      "proxmox-backup-banner",
      "proxmox-backup-client",
      "proxmox-file-restore",
-@@ -40,115 +39,34 @@
- name = "proxmox_backup"
- path = "src/lib.rs"
+-    "proxmox-restore-daemon",
+     "proxmox-rrd",
  
--[dependencies]
--apt-pkg-native = "0.3.2"
--base64 = "0.13"
--bitflags = "1.2.1"
--bytes = "1.0"
--cidr = "0.2.1"
--crc32fast = "1"
--endian_trait = { version = "0.6", features = ["arrays"] }
--flate2 = "1.0"
--anyhow = "1.0"
--thiserror = "1.0"
--futures = "0.3"
--h2 = { version = "0.3", features = [ "stream" ] }
--handlebars = "3.0"
--hex = "0.4.3"
--http = "0.2"
--hyper = { version = "0.14", features = [ "full" ] }
--lazy_static = "1.4"
--libc = "0.2"
--log = "0.4.17"
--nix = "0.24"
--num-traits = "0.2"
--once_cell = "1.3.1"
--openssl = "0.10.38" # currently patched!
--pam = "0.7"
--pam-sys = "0.5"
--percent-encoding = "2.1"
--regex = "1.5.5"
--rustyline = "9"
--serde = { version = "1.0", features = ["derive"] }
--serde_json = "1.0"
--siphasher = "0.3"
--syslog = "4.0"
--tokio = { version = "1.6", features = [ "fs", "io-util", "io-std", "macros", "net", "parking_lot", "process", "rt", "rt-multi-thread", "signal", "time" ] }
--tokio-openssl = "0.6.1"
--tokio-stream = "0.1.0"
--tokio-util = { version = "0.7", features = [ "codec", "io" ] }
--tower-service = "0.3.0"
--udev = "0.4"
--url = "2.1"
--#valgrind_request = { git = "https://github.com/edef1c/libvalgrind_request", version = "1.1.0", optional = true }
--walkdir = "2"
--xdg = "2.2"
--nom = "7"
--crossbeam-channel = "0.5"
--
--# Used only by examples currently:
--zstd = { version = "0.6", features = [ "bindgen" ] }
--
--pathpatterns = "0.1.2"
--pxar = { version = "0.10.2", features = [ "tokio-io" ] }
--
--proxmox-http = { version = "0.7", features = [ "client", "client-trait", "http-helpers", "proxmox-async", "websocket" ] }
--proxmox-io = "1"
--proxmox-lang = "1.1"
+     "pxar-bin",
+@@ -62,9 +61,6 @@
+ proxmox-http = { version = "0.7", features = [ "client", "http-helpers", "websocket" ] } # see below
+ proxmox-io = "1.0.1" # tools and client use "tokio" feature
+ proxmox-lang = "1.1"
+-proxmox-ldap = "0.1"
 -proxmox-metrics = "0.2"
--proxmox-router = { version = "1.3.0", features = [ "cli" ] }
--proxmox-schema = { version = "1.3.1", features = [ "api-macro" ] }
--proxmox-section-config = "1"
--proxmox-tfa = { version = "2.1", features = [ "api", "api-types" ] }
--proxmox-time = "1.1.2"
--proxmox-uuid = "1"
--proxmox-serde = { version = "0.1.1", features = [ "serde_json" ] }
--proxmox-shared-memory = "0.2"
+-proxmox-rest-server = "0.2.2"
+ # some use "cli", some use "cli" and "server", pbs-config uses nothing
+ proxmox-router = { version = "1.3.1", default_features = false }
+ # everything but pbs-config and pbs-client ues "api-macro"
+@@ -72,7 +68,6 @@
+ proxmox-section-config = "1"
+ proxmox-serde = "0.1.1"
+ proxmox-shared-memory = "0.2.3"
 -proxmox-subscription = { version = "0.3", features = [ "api-types" ] }
--proxmox-sys = { version = "0.4.1", features = [ "sortable-macro", "timer" ] }
--proxmox-compression = "0.1"
--proxmox-rest-server = "0.2"
--
--
+ proxmox-sys = "0.4.2"
+ proxmox-tfa = { version = "2.1", features = [ "api", "api-types" ] }
+ proxmox-time = "1.1.2"
+@@ -80,9 +75,6 @@
+ 
+ # other proxmox crates
+ pathpatterns = "0.1.2"
 -proxmox-acme-rs = "0.4"
 -proxmox-apt = "0.9.0"
--proxmox-async = "0.4"
--proxmox-openid = "0.9.0"
--
--pbs-api-types = { path = "pbs-api-types" }
--pbs-buildcfg = { path = "pbs-buildcfg" }
--pbs-client = { path = "pbs-client" }
--pbs-config = { path = "pbs-config" }
--pbs-datastore = { path = "pbs-datastore" }
--proxmox-rrd = { path = "proxmox-rrd" }
--pbs-tools = { path = "pbs-tools" }
--pbs-tape = { path = "pbs-tape" }
--
+-proxmox-openid = "0.9.9"
+ pxar = "0.10.2"
+ 
+ # PBS workspace
+@@ -101,7 +93,6 @@
+ 
+ # regular crates
+ anyhow = "1.0"
+-apt-pkg-native = "0.3.2"
+ base64 = "0.13"
+ bitflags = "1.2.1"
+ bytes = "1.0"
+@@ -154,7 +145,6 @@
+ 
+ [dependencies]
+ anyhow.workspace = true
+-apt-pkg-native.workspace = true
+ base64.workspace = true
+ bitflags.workspace = true
+ bytes.workspace = true
+@@ -206,24 +196,17 @@
+ proxmox-http = { workspace = true, features = [ "client-trait", "proxmox-async" ] } # pbs-client doesn't use these
+ proxmox-io.workspace = true
+ proxmox-lang.workspace = true
+-proxmox-ldap.workspace = true
+-proxmox-metrics.workspace = true
+-proxmox-rest-server.workspace = true
+ proxmox-router = { workspace = true, features = [ "cli", "server"] }
+ proxmox-schema = { workspace = true, features = [ "api-macro" ] }
+ proxmox-section-config.workspace = true
+ proxmox-serde = { workspace = true, features = [ "serde_json" ] }
+ proxmox-shared-memory.workspace = true
+-proxmox-subscription.workspace = true
+ proxmox-sys = { workspace = true, features = [ "sortable-macro", "timer" ] }
+ proxmox-tfa.workspace = true
+ proxmox-time.workspace = true
+ proxmox-uuid.workspace = true
+ 
+ pathpatterns.workspace = true
+-proxmox-acme-rs.workspace = true
+-proxmox-apt.workspace = true
+-proxmox-openid.workspace = true
+ pxar.workspace = true
+ 
+ pbs-api-types.workspace = true
+@@ -240,28 +223,30 @@
  # Local path overrides
--# NOTE: You must run `cargo update` after changing this for it to take effect!
+ # NOTE: You must run `cargo update` after changing this for it to take effect!
  [patch.crates-io]
 -#proxmox-acme-rs = { path = "../proxmox-acme-rs" }
 -#proxmox-apt = { path = "../proxmox-apt" }
@@ -127,8 +109,6 @@
 +proxmox-http = { path = "../proxmox/proxmox-http" }
 +proxmox-io = { path = "../proxmox/proxmox-io" }
 +proxmox-lang = { path = "../proxmox/proxmox-lang" }
-+proxmox-metrics = { path = "../proxmox/proxmox-metrics" }
-+proxmox-rest-server = { path = "../proxmox/proxmox-rest-server" }
 +proxmox-router = { path = "../proxmox/proxmox-router" }
 +proxmox-schema = { path = "../proxmox/proxmox-schema" }
 +proxmox-section-config = { path = "../proxmox/proxmox-section-config" }

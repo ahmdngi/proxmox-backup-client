@@ -2,10 +2,10 @@
 # 
 # build proxmox-backup-client for RHEL 8 and RHEL 9
 #  last tested:
-#   - at 2022-11-29
+#   - at 2023-02-22
 #   - on Red Hat Enterprise Linux release 8.7 (Ootpa)
 #   - and Red Hat Enterprise Linux release 9.0 (Plow)
-#   - with proxmox-backup-client 2.3.1
+#   - with proxmox-backup-client 2.3.3
 # 
 
 # requirements
@@ -52,8 +52,8 @@ cargo generate-rpm
 
 if [[ $? == 0 ]]; then
     echo "rpm build successful"
-    rpm -qip target/generate-rpm/proxmox-backup-2.3.1-1.x86_64.rpm
-    rpm -qlp target/generate-rpm/proxmox-backup-2.3.1-1.x86_64.rpm
+    rpm -qip target/generate-rpm/proxmox-backup-2.3.3-1.x86_64.rpm
+    rpm -qlp target/generate-rpm/proxmox-backup-2.3.3-1.x86_64.rpm
 else
     echo "rpm build failed"
     exit 1
@@ -62,5 +62,5 @@ fi
 echo ""
 echo "The proxmox-backup rpm can be found in the folder proxmox-backup/target/generate-rpm"
 echo "Install it with dnf:"
-echo "dnf install proxmox-backup/target/generate-rpm/proxmox-backup-2.3.1-1.x86_64.rpm"
+echo "dnf install proxmox-backup/target/generate-rpm/proxmox-backup-2.3.3-1.x86_64.rpm"
 echo ""
