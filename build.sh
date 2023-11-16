@@ -2,15 +2,16 @@
 # 
 # build proxmox-backup-client for RHEL 8 and RHEL 9
 #  last tested:
-#   - at 2023-03-30
-#   - on Red Hat Enterprise Linux release 8.7
-#   - and Red Hat Enterprise Linux release 9.1
-#   - with proxmox-backup-client 2.4.1
+#   - at 2023-11-16
+#   - on Red Hat Enterprise Linux release 8.8
+#   - and Red Hat Enterprise Linux release 9.3
+#   - with proxmox-backup-client 3.0.4
 # 
 
 # requirements
 #curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 #source $HOME/.cargo/env
+#rustup update
 
 #dnf update
 #dnf groupinstall 'Development Tools'
@@ -24,6 +25,7 @@ echo "cloning Proxmox repositories ..."
 git clone git://git.proxmox.com/git/proxmox-backup.git
 git clone git://git.proxmox.com/git/proxmox.git
 git clone git://git.proxmox.com/git/proxmox-fuse.git
+git clone git://git.proxmox.com/git/pathpatterns.git
 git clone git://git.proxmox.com/git/pxar.git
 echo "done"
 
@@ -52,8 +54,8 @@ cargo generate-rpm
 
 if [[ $? == 0 ]]; then
     echo "rpm build successful"
-    rpm -qip target/generate-rpm/proxmox-backup-2.4.1-1.x86_64.rpm
-    rpm -qlp target/generate-rpm/proxmox-backup-2.4.1-1.x86_64.rpm
+    rpm -qip target/generate-rpm/proxmox-backup-3.0.4-1.x86_64.rpm
+    rpm -qlp target/generate-rpm/proxmox-backup-3.0.4-1.x86_64.rpm
 else
     echo "rpm build failed"
     exit 1
@@ -62,5 +64,5 @@ fi
 echo ""
 echo "The proxmox-backup rpm can be found in the folder proxmox-backup/target/generate-rpm"
 echo "Install it with dnf:"
-echo "dnf install proxmox-backup/target/generate-rpm/proxmox-backup-2.4.1-1.x86_64.rpm"
+echo "dnf install proxmox-backup/target/generate-rpm/proxmox-backup-3.0.4-1.x86_64.rpm"
 echo ""

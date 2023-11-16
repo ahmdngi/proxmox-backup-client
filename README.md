@@ -4,14 +4,14 @@ Proxmox Backup Client for Red Hat Enterprise Linux RHEL 8 and RHEL 9
 
 This will also work with Rocky Linux 8, Rocky Linux 9, AlmaLinux 8 and AlmaLinux 9.
 
-Users reported it works on Fedora (at least 36) too.
+Users reported it works on Fedora >= 36 too.
 
 
 ## Option A - Use the prebuilt binary rpm package
 
 ### Binary package
 
-The RPM packages for RHEL 8 and RHEL 9 are available as assets of release [2.4.1](https://github.com/tomgem/proxmox-backup-client/releases/tag/2.4.1).
+The RPM packages for RHEL 8 and RHEL 9 are available as assets of release [3.0.4](https://github.com/tomgem/proxmox-backup-client/releases/tag/3.0.4).
 
 ### Install the binary package
 
@@ -24,7 +24,7 @@ dnf install systemd-libs libgcc libzstd libacl fuse3-libs libuuid openssl-libs
 Now install the rpm:
 
 ```
-dnf install proxmox-backup-2.4.1-1.x86_64.rpm
+dnf install proxmox-backup-3.0.4-1.x86_64.rpm
 ```
 
 
@@ -67,14 +67,14 @@ dnf install systemd-libs libgcc libzstd libacl fuse3-libs libuuid openssl-libs
 Now install proxmox-backup-client:
 
 ```
-dnf install proxmox-backup/target/generate-rpm/proxmox-backup-2.4.1-1.x86_64.rpm
+dnf install proxmox-backup/target/generate-rpm/proxmox-backup-3.0.4-1.x86_64.rpm
 ```
 
 ### Test it
 
 ```
 proxmox-backup-client version
-client version: 2.4.1
+client version: 3.0.4
 ```
 
 ## Thanks

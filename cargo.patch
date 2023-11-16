@@ -1,5 +1,5 @@
---- proxmox-backup/Cargo.toml	2023-03-30 20:44:58.107032607 +0200
-+++ proxmox-backup/Cargo.gem.toml	2023-03-30 22:07:03.000000000 +0200
+--- proxmox-backup/Cargo.toml	2023-11-16 09:57:20
++++ proxmox-backup/Cargo.gem.toml	2023-11-16 10:43:17
 @@ -42,7 +42,7 @@
      "proxmox-backup-banner",
      "proxmox-backup-client",
@@ -9,42 +9,49 @@
      "proxmox-rrd",
  
      "pxar-bin",
-@@ -62,9 +62,9 @@
- proxmox-http = { version = "0.8.0", features = [ "client", "http-helpers", "websocket" ] } # see below
+@@ -54,7 +54,7 @@
+ 
+ [workspace.dependencies]
+ # proxmox workspace
+-proxmox-apt = "0.10.5"
++#proxmox-apt = "0.10.5"
+ proxmox-async = "0.4"
+ proxmox-auth-api = "0.3"
+ proxmox-borrow = "1"
+@@ -64,10 +64,10 @@
+ proxmox-human-byte = "0.1"
  proxmox-io = "1.0.1" # tools and client use "tokio" feature
  proxmox-lang = "1.1"
--proxmox-ldap = "0.1"
--proxmox-metrics = "0.2"
--proxmox-rest-server = { version = "0.3.0", features = [ "templates" ] }
-+#proxmox-ldap = "0.1"
-+#proxmox-metrics = "0.2"
-+#proxmox-rest-server = { version = "0.3.0", features = [ "templates" ] }
+-proxmox-ldap = "0.2.1"
+-proxmox-metrics = "0.3"
+-proxmox-openid = "0.10.0"
+-proxmox-rest-server = { version = "0.4.1", features = [ "templates" ] }
++#proxmox-ldap = "0.2.1"
++#proxmox-metrics = "0.3"
++#proxmox-openid = "0.10.0"
++#proxmox-rest-server = { version = "0.4.1", features = [ "templates" ] }
  # some use "cli", some use "cli" and "server", pbs-config uses nothing
- proxmox-router = { version = "1.3.1", default_features = false }
- # everything but pbs-config and pbs-client ues "api-macro"
-@@ -73,7 +73,7 @@
+ proxmox-router = { version = "2.0.0", default_features = false }
+ # everything but pbs-config and pbs-client use "api-macro"
+@@ -76,7 +76,7 @@
  proxmox-serde = "0.1.1"
- proxmox-shared-memory = "0.2.3"
+ proxmox-shared-memory = "0.3.0"
  proxmox-sortable-macro = "0.1.2"
--proxmox-subscription = { version = "0.3", features = [ "api-types" ] }
-+#proxmox-subscription = { version = "0.3", features = [ "api-types" ] }
- proxmox-sys = "0.4.2"
- proxmox-tfa = { version = "3", features = [ "api", "api-types" ] }
+-proxmox-subscription = { version = "0.4", features = [ "api-types" ] }
++#proxmox-subscription = { version = "0.4", features = [ "api-types" ] }
+ proxmox-sys = "0.5.0"
+ proxmox-tfa = { version = "4.0.4", features = [ "api", "api-types" ] }
  proxmox-time = "1.1.2"
-@@ -81,9 +81,9 @@
+@@ -84,7 +84,7 @@
  
  # other proxmox crates
- pathpatterns = "0.1.2"
+ pathpatterns = "0.3"
 -proxmox-acme-rs = "0.4"
--proxmox-apt = "0.9.0"
--proxmox-openid = "0.9.9"
 +#proxmox-acme-rs = "0.4"
-+#proxmox-apt = "0.9.0"
-+#proxmox-openid = "0.9.9"
  pxar = "0.10.2"
  
  # PBS workspace
-@@ -101,7 +101,7 @@
+@@ -102,7 +102,7 @@
  
  # regular crates
  anyhow = "1.0"
@@ -53,7 +60,7 @@
  base64 = "0.13"
  bitflags = "1.2.1"
  bytes = "1.0"
-@@ -154,7 +154,7 @@
+@@ -153,7 +153,7 @@
  
  [dependencies]
  anyhow.workspace = true
@@ -62,15 +69,26 @@
  base64.workspace = true
  bitflags.workspace = true
  bytes.workspace = true
-@@ -207,25 +207,25 @@
- proxmox-http = { workspace = true, features = [ "client-trait", "proxmox-async", "rate-limited-stream" ] } # pbs-client doesn't use these
+@@ -199,7 +199,7 @@
+ #valgrind_request = { git = "https://github.com/edef1c/libvalgrind_request", version = "1.1.0", optional = true }
+ 
+ # proxmox workspace
+-proxmox-apt.workspace = true
++#proxmox-apt.workspace = true
+ proxmox-async.workspace = true
+ proxmox-auth-api = { workspace = true, features = [ "api", "pam-authenticator" ] }
+ proxmox-compression.workspace = true
+@@ -207,17 +207,17 @@
+ proxmox-human-byte.workspace = true
  proxmox-io.workspace = true
  proxmox-lang.workspace = true
 -proxmox-ldap.workspace = true
 -proxmox-metrics.workspace = true
+-proxmox-openid.workspace = true
 -proxmox-rest-server = { workspace = true, features = [ "rate-limited-stream" ] }
 +#proxmox-ldap.workspace = true
 +#proxmox-metrics.workspace = true
++#proxmox-openid.workspace = true
 +#proxmox-rest-server = { workspace = true, features = [ "rate-limited-stream" ] }
  proxmox-router = { workspace = true, features = [ "cli", "server"] }
  proxmox-schema = { workspace = true, features = [ "api-macro" ] }
@@ -83,28 +101,26 @@
  proxmox-sys = { workspace = true, features = [ "timer" ] }
  proxmox-tfa.workspace = true
  proxmox-time.workspace = true
- proxmox-uuid.workspace = true
+@@ -225,7 +225,7 @@
  
+ # in their respective repo
  pathpatterns.workspace = true
 -proxmox-acme-rs.workspace = true
--proxmox-apt.workspace = true
--proxmox-openid.workspace = true
 +#proxmox-acme-rs.workspace = true
-+#proxmox-apt.workspace = true
-+#proxmox-openid.workspace = true
  pxar.workspace = true
  
- pbs-api-types.workspace = true
-@@ -242,31 +242,36 @@
- # NOTE: You must run `cargo update` after changing this for it to take effect!
+ # proxmox-backup workspace/internal crates
+@@ -244,35 +244,40 @@
  [patch.crates-io]
- #proxmox-acme-rs = { path = "../proxmox-acme-rs" }
+ 
+ #proxmox-apt = { path = "../proxmox/proxmox-apt" }
 -#proxmox-async = { path = "../proxmox/proxmox-async" }
 -#proxmox-auth-api = { path = "../proxmox/proxmox-auth-api" }
 -#proxmox-borrow = { path = "../proxmox/proxmox-borrow" }
 -#proxmox-compression = { path = "../proxmox/proxmox-compression" }
 -#proxmox-fuse = { path = "../proxmox-fuse" }
 -#proxmox-http = { path = "../proxmox/proxmox-http" }
+-#proxmox-human-byte = { path = "../proxmox/proxmox-human-byte" }
 -#proxmox-io = { path = "../proxmox/proxmox-io" }
 -#proxmox-lang = { path = "../proxmox/proxmox-lang" }
 +proxmox-async = { path = "../proxmox/proxmox-async" }
@@ -113,14 +129,19 @@
 +proxmox-compression = { path = "../proxmox/proxmox-compression" }
 +proxmox-fuse = { path = "../proxmox-fuse" }
 +proxmox-http = { path = "../proxmox/proxmox-http" }
++proxmox-human-byte = { path = "../proxmox/proxmox-human-byte" }
 +proxmox-io = { path = "../proxmox/proxmox-io" }
 +proxmox-lang = { path = "../proxmox/proxmox-lang" }
+ #proxmox-ldap = { path = "../proxmox/proxmox-ldap" }
+ #proxmox-metrics = { path = "../proxmox/proxmox-metrics" }
+ #proxmox-openid = { path = "../proxmox/proxmox-openid" }
  #proxmox-rest-server = { path = "../proxmox/proxmox-rest-server" }
 -#proxmox-router = { path = "../proxmox/proxmox-router" }
 -#proxmox-schema = { path = "../proxmox/proxmox-schema" }
 -#proxmox-section-config = { path = "../proxmox/proxmox-section-config" }
 -#proxmox-serde = { path = "../proxmox/proxmox-serde" }
 -#proxmox-shared-memory = { path = "../proxmox/proxmox-shared-memory" }
+-#proxmox-sortable-macro = { path = "../proxmox/proxmox-sortable-macro" }
 +proxmox-router = { path = "../proxmox/proxmox-router" }
 +proxmox-schema = { path = "../proxmox/proxmox-schema" }
 +proxmox-section-config = { path = "../proxmox/proxmox-section-config" }
@@ -137,10 +158,10 @@
 +proxmox-tfa = { path = "../proxmox/proxmox-tfa" }
 +proxmox-time = { path = "../proxmox/proxmox-time" }
 +proxmox-uuid = { path = "../proxmox/proxmox-uuid" }
- #proxmox-apt = { path = "../proxmox-apt" }
- #proxmox-openid = { path = "../proxmox-openid-rs" }
--
+ #proxmox-acme-rs = { path = "../proxmox-acme-rs" }
+-#pathpatterns = {path = "../pathpatterns" }
 -#pxar = { path = "../pxar" }
++pathpatterns = {path = "../pathpatterns" }
 +pxar = { path = "../pxar" }
  
  [features]
