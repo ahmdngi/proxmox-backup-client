@@ -1,6 +1,6 @@
 # Steps to Build Proxmox Backup Client 3.3.3
 
-# 1. Install rust and dev tools
+## 1. Install rust and dev tools
 
 ```bash
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
@@ -12,7 +12,7 @@ dnf groupinstall 'Development Tools'
 dnf install git systemd-devel clang-devel libzstd-devel libacl-devel pam-devel fuse3-devel libuuid-devel openssl-devel
 ```
 
-# 2. Clone required git repos
+## 2. Clone required git repos
 ```bash
 git clone git://git.proxmox.com/git/proxmox-backup.git
 git clone git://git.proxmox.com/git/proxmox.git
@@ -31,7 +31,7 @@ rm -rf proxmox-backup/.cargo
 
 ## 4. Fix FUSE `noflush` Error
 
-**Error:**
+**Error:**  
 cargo:warning=src/glue.c: In function 'glue_set_ffi_noflush':
 cargo:warning=src/glue.c:22:16: error: 'struct fuse_file_info' has no member named 'noflush'; did you mean 'flush'?
 
@@ -52,7 +52,7 @@ vim -c '%s/h2::legacy/h2/g' -c 'wq' [files-to-modify]
 ```
 
 
-## Reason why h2 was downgraded to v0.3 in Cargo.toml
+### Reason why h2 was downgraded to v0.3 in Cargo.toml
 
 **Error:**
 Compiling pbs-fuse-loop v0.1.0 (/home/backup/client-prox/proxmox-backup-client/proxmox-backup/pbs-fuse-loop)
@@ -72,7 +72,7 @@ Update Cargo.toml to use h2 version 0.3 instead of 0.4:
 
 
 
-# 6. Building Proxmox Backup Client
+## 6. Building Proxmox Backup Client
 
 ```bash
 cd proxmox-backup
@@ -80,7 +80,7 @@ cargo fetch --target x86_64-unknown-linux-gnu
 cargo build --release --package proxmox-backup-client --bin proxmox-backup-client --package pxar-bin --bin pxar
 ```
 
-# 7. Build RPM  
+## 7. Build RPM  
 
 ```bash
 cargo install cargo-generate-rpm
@@ -88,7 +88,7 @@ cargo generate-rpm
 ```
 
 
-# 8. Check Successful Build
+## 8. Check Successful Build
 ```
 root# rpm -qip proxmox-backup-3.3.3-1.x86_64.rpm
 Name        : proxmox-backup
@@ -110,25 +110,24 @@ Description :
 Proxmox Backup
 ```
 
-# 9. Package Installation
+## 9. Package Installation
 
 ```bash
 dnf install proxmox-backup/target/generate-rpm/proxmox-backup-3.3.3-1.x86_64.rpm
 ```
 
 
-# Notes
-- original and modified Cargo.toml are available for reference
+## Notes
+- Original and Modified Cargo.toml are available for reference.
 - This guide can work for RHEL 8 and RHEL 9
-    last tested:
+    Last Tested:
     - at 2025-03-25
-    - on Rocky Linux 8.10 (Green Obsidian)
-    - and Rocky Linux 9.5 (Blue Onyx)
-    - with proxmox-backup-client 3.3.3-1
+    - on **Rocky Linux 8.10 (Green Obsidian)**
+    - and **Rocky Linux 9.5 (Blue Onyx)**
 
 
 
-## Thanks
+## Acknowledgement
 This work was based on the efforts of these awesome people
 - [sg4r](https://github.com/sg4r), REPO [sg4r/proxmox-backup-client](https://github.com/sg4r/proxmox-backup-client)
 -  [TomGem](https://github.com/TomGem), REPO  [TomGem/proxmox-backup-client](https://github.com/TomGem/proxmox-backup-client)
