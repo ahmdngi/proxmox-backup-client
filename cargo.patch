@@ -67,7 +67,7 @@
  # other proxmox crates
  pathpatterns = "0.3"
 -proxmox-acme = "0.5.3"
-+#proxmox-acme = "0.5.3"
++#proxmox-acme = "0.5.3" ########maybe needs to be removed
  pxar = "0.12.1"
  
  # PBS workspace
@@ -90,6 +90,7 @@
  foreign-types = "0.3"
  futures = "0.3"
 -h2 = { version = "0.4", features = [ "legacy", "stream" ] }
++#h2 = { version = "0.4", features = [ "stream" ] }
 +h2 = { version = "0.3", features = [ "stream" ] }
  handlebars = "3.0"
  hex = "0.4.3"
@@ -147,7 +148,7 @@
  
  # in their respective repo
 -proxmox-acme.workspace = true
-+#proxmox-acme.workspace = true 
++#proxmox-acme.workspace = true  #### check for remove
  pxar.workspace = true
  
  # proxmox-backup workspace/internal crates
@@ -222,13 +223,13 @@
 +#added by me
 +pbs-api-types = { path = "../proxmox/pbs-api-types" }
 +proxmox-shared-cache = { path = "../proxmox/proxmox-shared-cache" }
-
+ 
 -#pathpatterns = {path = "../pathpatterns" }
 -#pxar = { path = "../pxar" }
 +#proxmox-acme = { path = "../proxmox/proxmox-acme" }
 +pathpatterns = {path = "../pathpatterns" }
 +pxar = { path = "../pxar" }
-
+ 
  [features]
  default = []
  #valgrind = ["valgrind_request"]
