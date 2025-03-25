@@ -113,7 +113,7 @@ Proxmox Backup
 # 9. Package Installation
 
 ```bash
-dnf install proxmox-backup/target/generate-rpm/proxmox-backup-3.3.3-1.x86_64.rpm"
+dnf install proxmox-backup/target/generate-rpm/proxmox-backup-3.3.3-1.x86_64.rpm
 ```
 
 
