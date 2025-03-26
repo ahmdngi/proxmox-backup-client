@@ -116,14 +116,21 @@ Proxmox Backup
 dnf install proxmox-backup/target/generate-rpm/proxmox-backup-3.3.3-1.x86_64.rpm
 ```
 
+## 10. Check Successful Installation 
+
+```
+root# proxmox-backup-client version
+client version: 3.3.3
+```
+
 
 ## Notes
 - Original and Modified Cargo.toml are available for reference.
 - This guide can work for RHEL 8 and RHEL 9
     Last Tested:
     - at 2025-03-25
-    - on **Rocky Linux 8.10 (Green Obsidian)**
-    - and **Rocky Linux 9.5 (Blue Onyx)**
+    - on **Rocky Linux 8.10 (Green Obsidian)** Kernel **Linux 4.18.0-553.40.1.el8_10.x86_64**
+    - and **Rocky Linux 9.5 (Blue Onyx)** Kernel **Linux 5.14.0-427.22.1.el9_4.x86_64**
 
 
 
