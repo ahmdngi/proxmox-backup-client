@@ -1,6 +1,18 @@
-# Steps to Build Proxmox Backup Client 3.3.3
+# Proxmox Backup Client 3.3.3 — Build Guide
 
-## 1. Install rust and dev tools
+This repository contains the patched `Cargo.toml` and step-by-step instructions to build **Proxmox Backup Client 3.3.3** from source on RHEL 8/9 and Rocky Linux.
+
+## Files
+
+| File | Description |
+|------|-------------|
+| `Cargo.toml.original` | Original Proxmox Backup Cargo.toml (v3.3.4) |
+| `Cargo.toml.updated` | Modified Cargo.toml targeting v3.3.3 with local path overrides and h2 downgrade |
+| `cargo.patch` | Unified diff between original and updated Cargo.toml |
+
+## Build Steps
+
+### 1. Install Rust and build dependencies
 
 ```bash
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
@@ -9,10 +21,12 @@ rustup update
 
 dnf update
 dnf groupinstall 'Development Tools'
-dnf install git systemd-devel clang-devel libzstd-devel libacl-devel pam-devel fuse3-devel libuuid-devel openssl-devel
+dnf install git systemd-devel clang-devel libzstd-devel \
+  libacl-devel pam-devel fuse3-devel libuuid-devel openssl-devel
 ```
 
-## 2. Clone required git repos
+### 2. Clone required repos
+
 ```bash
 git clone git://git.proxmox.com/git/proxmox-backup.git
 git clone git://git.proxmox.com/git/proxmox.git
@@ -21,120 +35,85 @@ git clone git://git.proxmox.com/git/pathpatterns.git
 git clone git://git.proxmox.com/git/pxar.git
 ```
 
-
-## 3. Update Cargo.toml
+### 3. Apply the Cargo.toml patch
 
 ```bash
 patch -p0 < cargo.patch
 rm -rf proxmox-backup/.cargo
 ```
 
-## 4. Fix FUSE `noflush` Error
+### 4. Fix FUSE `noflush` error
 
-**Error:**  
-cargo:warning=src/glue.c: In function 'glue_set_ffi_noflush':
-cargo:warning=src/glue.c:22:16: error: 'struct fuse_file_info' has no member named 'noflush'; did you mean 'flush'?
+If you encounter:
 
-**Solution:**
-1. Edit `proxmox-fuse/src/glue.c`
-2. Remove the last line containing `MAKE_ACCESSORS(noflush)`
+```
+src/glue.c:22:16: error: 'struct fuse_file_info' has no member named 'noflush'
+```
 
-## 5. Replace "h2::legacy" with "h2"
+Edit `proxmox-fuse/src/glue.c` and remove the line containing `MAKE_ACCESSORS(noflush)`.
 
-**Files to modify:**
+### 5. Replace `h2::legacy` references
+
+In these three files:
+
 - `proxmox-backup/pbs-client/src/backup_writer.rs`
 - `proxmox-backup/pbs-client/src/http_client.rs`
 - `proxmox-backup/pbs-client/src/pipe_to_stream.rs`
 
-**Command:**
+Run:
+
 ```bash
-vim -c '%s/h2::legacy/h2/g' -c 'wq' [files-to-modify]
+sed -i 's/h2::legacy/h2/g' proxmox-backup/pbs-client/src/{backup_writer,http_client,pipe_to_stream}.rs
 ```
 
+**Why?** The upstream v3.3.4 uses `h2` v0.4 with the `legacy` feature. v3.3.3 uses `h2` v0.3 which exposes types directly under `h2::` instead of `h2::legacy::`.
 
-### Reason why h2 was downgraded to v0.3 in Cargo.toml
-
-**Error:**
-Compiling pbs-fuse-loop v0.1.0 (/home/backup/client-prox/proxmox-backup-client/proxmox-backup/pbs-fuse-loop)
-error[E0308]: mismatched types
-    --> pbs-client/src/http_client.rs:975:38
-     |
-975  |             H2Client::h2api_response(resp).await?; // raise error
-     |             ------------------------ ^^^^ expected `Response<RecvStream>`, found a different `Response<RecvStream>`
-     |             |
-     |             arguments to this function are incorrect
-     |
-note: two different versions of crate `http` are being used; two types coming from two different versions of the same crate are different types even if they look the same
-
-**Solution:**
-Update Cargo.toml to use h2 version 0.3 instead of 0.4:     
-`h2 = { version = "0.3", features = [ "stream" ] }`
-
-
-
-## 6. Building Proxmox Backup Client
+### 6. Build
 
 ```bash
 cd proxmox-backup
 cargo fetch --target x86_64-unknown-linux-gnu
-cargo build --release --package proxmox-backup-client --bin proxmox-backup-client --package pxar-bin --bin pxar
+cargo build --release \
+  --package proxmox-backup-client --bin proxmox-backup-client \
+  --package pxar-bin --bin pxar
 ```
 
-## 7. Build RPM  
+### 7. Build RPM
 
 ```bash
 cargo install cargo-generate-rpm
 cargo generate-rpm
 ```
 
+Verify:
 
-## 8. Check Successful Build
-```
-root# rpm -qip proxmox-backup-3.3.3-1.x86_64.rpm
-Name        : proxmox-backup
-Epoch       : 0
-Version     : 3.3.3
-Release     : 1
-Architecture: x86_64
-Install Date: (not installed)
-Group       : Unspecified
-Size        : 22563736
-License     : AGPL-3
-Signature   : (none)
-Source RPM  : (none)
-Build Date  : Tue Mar 25 16:36:18 2025
-Build Host  : (none)
-URL         : https://www.proxmox.com
-Summary     : Proxmox Backup
-Description :
-Proxmox Backup
+```bash
+rpm -qip proxmox-backup-3.3.3-1.x86_64.rpm
 ```
 
-## 9. Package Installation
+### 8. Install
 
 ```bash
 dnf install proxmox-backup/target/generate-rpm/proxmox-backup-3.3.3-1.x86_64.rpm
 ```
 
-## 10. Check Successful Installation 
+Verify:
 
+```bash
+proxmox-backup-client version
+# client version: 3.3.3
 ```
-root# proxmox-backup-client version
-client version: 3.3.3
-```
 
+## Tested On
 
-## Notes
-- Original and Modified Cargo.toml are available for reference.
-- This guide can work for RHEL 8 and RHEL 9
-    Last Tested:
-    - at 2025-03-25
-    - on **Rocky Linux 8.10 (Green Obsidian)** Kernel **Linux 4.18.0-553.40.1.el8_10.x86_64**
-    - and **Rocky Linux 9.5 (Blue Onyx)** Kernel **Linux 5.14.0-427.22.1.el9_4.x86_64**
+| OS | Kernel | Date |
+|----|--------|------|
+| Rocky Linux 8.10 (Green Obsidian) | 4.18.0-553.40.1.el8_10.x86_64 | 2025-03-25 |
+| Rocky Linux 9.5 (Blue Onyx) | 5.14.0-427.22.1.el9_4.x86_64 | 2025-03-25 |
 
+## Acknowledgments
 
+This work is based on the efforts of:
 
-## Acknowledgement
-This work was based on the efforts of these awesome people
-- [sg4r](https://github.com/sg4r), REPO [sg4r/proxmox-backup-client](https://github.com/sg4r/proxmox-backup-client)
--  [TomGem](https://github.com/TomGem), REPO  [TomGem/proxmox-backup-client](https://github.com/TomGem/proxmox-backup-client)
+- [sg4r](https://github.com/sg4r) — [sg4r/proxmox-backup-client](https://github.com/sg4r/proxmox-backup-client)
+- [TomGem](https://github.com/TomGem) — [TomGem/proxmox-backup-client](https://github.com/TomGem/proxmox-backup-client)
